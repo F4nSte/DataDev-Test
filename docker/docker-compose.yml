@@ -1,0 +1,112 @@
+version: '3.8'
+
+services:
+  # Backend API service
+  backend:
+    build:
+      context: ..
+      dockerfile: docker/backend.Dockerfile
+    container_name: annotation-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - PYTHONPATH=/app
+    volumes:
+      - ../apps/backend/storage:/app/apps/backend/storage
+      - ../apps/backend/logs:/app/logs
+    networks:
+      - annotation-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+  # Frontend React service
+  frontend:
+    build:
+      context: ..
+      dockerfile: docker/frontend.Dockerfile
+    container_name: annotation-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - annotation-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    environment:
+      - REACT_APP_API_URL=http://localhost:5000
+
+  # Development profile with hot-reload
+  backend-dev:
+    profiles: ["dev"]
+    build:
+      context: ..
+      dockerfile: docker/backend.Dockerfile
+      target: development
+    ports:
+      - "5001:5000"
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+      - PYTHONPATH=/app
+    volumes:
+      - ../apps/backend:/app/apps/backend
+      - ../apps/backend/storage:/app/apps/backend/storage
+    networks:
+      - annotation-network
+    command: python -m flask run --host=0.0.0.0 --port=5000 --debug
+
+  frontend-dev:
+    profiles: ["dev"]
+    build:
+      context: ..
+      dockerfile: docker/frontend.Dockerfile
+      target: development
+    ports:
+      - "3001:3000"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - REACT_APP_API_URL=http://localhost:5001
+    volumes:
+      - ../apps/frontend:/app/apps/frontend
+      - /app/apps/frontend/node_modules
+    networks:
+      - annotation-network
+    command: npm start
+
+  # Nginx reverse proxy (optional - for production)
+  nginx:
+    profiles: ["production"]
+    image: nginx:alpine
+    container_name: annotation-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx-production.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - annotation-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  annotation-network:
+    driver: bridge 
