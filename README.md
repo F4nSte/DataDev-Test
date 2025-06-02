@@ -7,8 +7,6 @@ Hi, this is a mini full-stack web page that serves as an image annotation tool t
 
 ## 🚀 Setup & Run Instructions
 
-  
-
 ### Option 1: Quick Start with Docker (Recommended)
 
   
@@ -21,8 +19,6 @@ git  clone  <repository-url>
 
 cd  DataDev-Test
 
-  
-
 # Start with Docker
 
 cd  docker
@@ -31,15 +27,9 @@ docker-compose  up  -d
 
 ```
 
-  
-
 Access the application at: `http://localhost:3000`
 
-  
-
 ### Option 2: Manual Development Setup
-
-  
 
 #### Prerequisites
 
@@ -57,13 +47,9 @@ Access the application at: `http://localhost:3000`
 
 cd  apps/backend
 
-  
-
 # Install dependencies
 
 pip  install  -r  requirements.txt
-
-  
 
 # Start the Flask server
 
@@ -71,25 +57,18 @@ python3  src/app.py
 
 ```
 
-  
-
 Backend will run on: `http://localhost:5000`
 
   
-
 #### Frontend Setup
 
 ```bash
 
 cd  apps/frontend
 
-  
-
 # Install dependencies
 
 npm  install
-
-  
 
 # Start the React development server
 
@@ -109,7 +88,7 @@ Frontend will run on: `http://localhost:3000`
 
 ### Frontend: React + TypeScript
 
-**Chosen:** React 19.1.0 with TypeScript 4.9.5
+**Chosen:** React with TypeScript
 
   
 
@@ -137,13 +116,13 @@ Frontend will run on: `http://localhost:3000`
 
 ### Backend: Flask + SQLite
 
-**Chosen:** Flask 3.1.1 with SQLite database
+**Chosen:** Flask with SQLite database
 
   
 
 **Why:**
 
--  **Lightweight** - Perfect for annotation tool without over-engineering
+-  **Lightweight** 
 
 -  **Flask simplicity** - Easy to understand and extend
 
@@ -157,11 +136,7 @@ Frontend will run on: `http://localhost:3000`
 
 -  **Single-threaded** - Flask dev server vs production WSGI deployment
 
-  
-
 ### Key Architectural Decisions
-
-  
 
 #### 1. **Monorepo Structure**
 
@@ -183,7 +158,7 @@ Frontend will run on: `http://localhost:3000`
 
 -  **Approach:** Local filesystem vs cloud storage
 
--  **Trade-off:** Simplicity vs scalability - chose local for MVP
+-  **Trade-off:** Simplicity vs scalability
 
   
 
@@ -191,7 +166,7 @@ Frontend will run on: `http://localhost:3000`
 
 -  **Supports:** JSON, COCO, YOLO
 
--  **Trade-off:** More formats vs maintenance - chose popular ML formats
+-  **Trade-off:** More formats vs maintenance 
 
   
 
@@ -199,43 +174,30 @@ Frontend will run on: `http://localhost:3000`
 
 -  **Approach:** Direct canvas manipulation vs library (e.g., Fabric.js)
 
--  **Trade-off:** Full control vs development time - chose control for precision
-
-  
+-  **Trade-off:** Full control vs development time 
 
 ## 🧪 How to run Tests
 
-  
 
 ### Frontend Testing
-
-  
 
 ```bash
 
 cd  apps/frontend
 
-  
-
 # Run all tests
 
 npm  test
 
-  
-
 # Run tests with coverage
 
 npm  test  --  --coverage
-
-  
 
 # Run specific test file
 
 npm  test  --  ImageAnnotator.test.tsx
 
 ```
-
-  
 
 **Test Coverage:**
 
@@ -249,8 +211,6 @@ npm  test  --  ImageAnnotator.test.tsx
 
 ### Backend Testing
 
-  
-
 ```bash
 
 cd  apps/backend
@@ -259,27 +219,19 @@ cd  apps/backend
 
 python  -m  pytest  tests/
 
-  
-
 # Run with verbose output
 
 python  -m  pytest  tests/  -v
 
-  
-
 # Run specific test file
 
 python  -m  pytest  tests/test_app.py  -v
-
-  
 
 # Run with coverage
 
 python  -m  pytest  tests/  --cov=src
 
 ```
-
-  
 
 **Test Coverage:**
 
@@ -296,7 +248,6 @@ python  -m  pytest  tests/  --cov=src
 ### Manual Testing Scenarios
 
   
-
 #### 1. **Image Upload**
 
 - ✅ Drag & drop multiple images
@@ -310,7 +261,6 @@ python  -m  pytest  tests/  --cov=src
 - ✅ Progress indicators
 
   
-
 #### 2. **Annotation Creation**
 
 - ✅ Draw bounding boxes (click & drag)
@@ -322,7 +272,6 @@ python  -m  pytest  tests/  --cov=src
 - ✅ Select and modify annotations
 
   
-
 #### 3. **Undo/Redo System**
 
 - ✅ Keyboard shortcuts (Ctrl+Z, Ctrl+Shift+Z)
@@ -334,7 +283,6 @@ python  -m  pytest  tests/  --cov=src
 - ✅ State consistency
 
   
-
 #### 4. **Data Export**
 
 - ✅ Download JSON format
@@ -346,7 +294,6 @@ python  -m  pytest  tests/  --cov=src
 - ✅ Verify format correctness
 
   
-
 #### 5. **Responsive Design**
 
 - ✅ Mobile devices (phones/tablets)
@@ -361,7 +308,6 @@ python  -m  pytest  tests/  --cov=src
 
 ### Integration Testing
 
-  
 
 ```bash
 
@@ -371,7 +317,6 @@ python  -m  pytest  tests/  --cov=src
 
 # Backend: http://localhost:5000
 
-  
 
 # Test complete workflow:
 
